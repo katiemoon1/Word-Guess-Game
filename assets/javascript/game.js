@@ -3,65 +3,88 @@ var score = 0;
 // Starting the game with losses of 0
 var losing = 0;
 // Starting the game with 10 guesses
-var guessesRemaining = 10;
+const guessesRemaining = 10;
 // Displaying the letters already guessed
-var letterGuesses = 0;
+var letterGuesses = [];
+var guessWord = [];
+var currentWord;
+var totalGuesses = 0;
+var gameStart = false;
+var gameOver = false;
 
 // Alphabet array
-var a = ["abcdefghijklmnopqrstuvwxyz"]
+var a = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 
 // Array of dog types to be guessed in the game
-var dogTypes = ["Boston Terrier", "Pit Bull", "Heeler", "Husky", "German Shepard"];
+var boston = ["boston terrier"];
 
-// Var to pick a word from the array
-var dogTypes = dogTypes[Math.floor(Math.random() * words.length)];
+function resetGame() {
+    totalGuesses = guessesRemaining;
+    gameStart = false;
 
-// Creating empty array to match the length of the words in the initial array
-var guessArray = [];
-for (var i = 0; i < word.length; i++) {
-    guessArray[i] = "_";
-}
+    currentWord = Math.floor(Math.random() * boston.length);
 
-var remaining = word.length;
+    guessWord = [];
+    letterGuesses = [];
 
-// FUNCTIONS
-function renderGuesses() {
-    if (guessesRemaining <= (letterGuesses - 1)) {
-        document.querySelector("#current").innerHTML = guessArray[remaining];
+    for (var i = 0; i < boston[currentWord].length; i++) {
+        guessWord.push("_");
     }
 
+    updateDisplay();
+}
+
+function updateDisplay() {
+    document.getElementById("wins").innerHTML = "Wins: " + score;
+    document.getElementById("current").innerHTML = "";
+    for (var i = 0; i < guessWord.length; i++) {
+        document.getElementById("current").innerHTML += guessWord[i];
+    }
+    document.getElementById("remaining").innerHTML = totalGuesses;
+    document.getElementById("letters").innerHTML = letterGuesses;
+    if (totalGuesses <= 0) {
+        gameOver = true;
+    }
+}
+
+document.onkeydown = function(event) {
+    if (gameOver) {
+        resetGame();
+        gameOver = false;
+    }
     else {
-        document.querySelector("#current").innerHTML = "Bummer! Game over!";
-        document.querySelector("#losses").innerHTML = "Losses: " + losing;
+        var userInput = event.key.toLowerCase();
     }
 }
 
-// Function to update score
-function updateScore() {
-    document.querySelector("#score").innerhtml = "Wins: " + score;
-}
+function userInput(a) {
+    if (guessesRemaining > 0) {
+        gameStart = true
 
-// Main Processes of the game
-// Call the functions to start the game
-renderGuesses();
-updateScore();
-
-// When the player presses a key to start the game, this function will run
-document.onkeyup = function(event) {
-    // If guessesRemaining is equal to 0, stop the function
-    if (guessesRemaining === 0) {
-        return;
-    }
-    // Determine which key is pressed and make it lowercase
-    var userInput = event.key.toLowerCase();
-
-    if (userInput === a) {
-        
-        if (userInput === guessArray[remaining]) {
-            document.querySelector("#current");
-            guessesRemaining--;
-            document.querySelector("#letters");
+        if (letterGuesses.indexOf(a) === -1 ) {
+        letterGuesses.push(a);
+        checkGuess(a);
         }
     }
 
+    updateDisplay();
+}
+
+function checkGuess(a) {
+    var position = [];
+
+    for (var i = 0; boston[currentWord].length; i++) {
+        if (boston[currentWord][i] === a ) {
+         position.push(i)
+        }
+    }
+
+    if (positions.length <= 0) {
+        guessesRemaining--;
+    }
+    else {
+        for (var i = 0; i < positions.length; i++) {
+            guessWord[position[i]] = a;
+        }
+    }
 }
