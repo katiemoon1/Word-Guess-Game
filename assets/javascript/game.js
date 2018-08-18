@@ -18,6 +18,7 @@ var a = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "
 // Array of dog types to be guessed in the game
 var boston = ["boston terrier"];
 
+// Function to reset the game.
 function resetGame() {
     totalGuesses = guessesRemaining;
     gameStart = false;
@@ -34,6 +35,7 @@ function resetGame() {
     updateDisplay();
 }
 
+// Function to update the page with the parameters needed for the game.
 function updateDisplay() {
     document.getElementById("wins").innerHTML = "Wins: " + score;
     document.getElementById("current").innerHTML = "";
@@ -47,6 +49,7 @@ function updateDisplay() {
     }
 }
 
+// How to start the game.
 document.onkeydown = function(event) {
     if (gameOver) {
         resetGame();
@@ -57,6 +60,7 @@ document.onkeydown = function(event) {
     }
 }
 
+// Function to start the game and check if the letter is included in the a array
 function userInput(a) {
     if (guessesRemaining > 0) {
         gameStart = true
@@ -70,6 +74,7 @@ function userInput(a) {
     updateDisplay();
 }
 
+// Function used to check if the letter pressed by the user is in the boston array and add it to the blank space on the page
 function checkGuess(a) {
     var position = [];
 
